@@ -333,7 +333,16 @@
               <!-- Submit -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-neutral-200 pt-5">
 
-
+                  <div v-if="submitSuccess" class="mt-2 flex flex-wrap gap-2">
+                    <button
+                        type="button"
+                        @click="downloadTicketsPdf"
+                        class="h-11 rounded-xl border border-neutral-200 bg-white px-5 text-sm font-semibold text-neutral-950
+                            hover:bg-neutral-50"
+                    >
+                        Download Tickets PDF
+                    </button>
+                </div>
                 <button
                   type="submit"
                   :disabled="isSubmitting"
@@ -350,16 +359,8 @@
               <p v-if="submitSuccess" class="text-sm font-semibold text-emerald-600">
                 Reservation submitted successfully ✅
               </p>
-                <div v-if="submitSuccess" class="mt-2 flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        @click="downloadTicketsPdf"
-                        class="h-11 rounded-xl border border-neutral-200 bg-white px-5 text-sm font-semibold text-neutral-950
-                            hover:bg-neutral-50"
-                    >
-                        Download Tickets PDF
-                    </button>
 
+              <div v-if="submitSuccess" class="mt-2 flex flex-wrap gap-2">
                     <button
                         type="button"
                         @click="closeModal"
@@ -369,6 +370,7 @@
                         Close
                     </button>
                 </div>
+                
             </div>
           </form>
         </div>
