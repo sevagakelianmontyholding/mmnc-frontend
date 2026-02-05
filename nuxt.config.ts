@@ -11,7 +11,7 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			charset: "utf-8",
-			titleTemplate: "%sMyMonty Network Circle",
+			titleTemplate: "%sMyMonty Networking Circle",
 			htmlAttrs: {
 				lang: "en",
 			},
