@@ -331,8 +331,7 @@
               </div>
 
               <!-- Submit -->
-              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-t border-neutral-200 pt-5">
-
+              <div class="flex flex-col sm:items-center sm:justify-between gap-3 border-t border-neutral-200 pt-5">
                   <div v-if="submitSuccess" class="mt-2 flex flex-wrap gap-2">
                     <button
                         type="button"
@@ -343,6 +342,7 @@
                         Download Tickets PDF
                     </button>
                 </div>
+
                 <button
                   type="submit"
                   :disabled="isSubmitting"
