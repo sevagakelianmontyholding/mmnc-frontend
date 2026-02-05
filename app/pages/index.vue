@@ -352,7 +352,7 @@
                   {{ isSubmitting ? 'Submitting...' : 'Submit Reservation' }}
                 </button>
               </div>
-
+ 
               <p v-if="submitError" class="text-sm font-semibold text-red-600">
                 {{ submitError }}
               </p>
