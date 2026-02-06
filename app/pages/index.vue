@@ -332,6 +332,42 @@
                       {{ errors[idx].email }}
                     </p>
                   </div>
+
+                  <div class="col-span-12 sm:col-span-6">
+                    <label class="block text-xs font-black uppercase tracking-[0.12em] text-neutral-600">
+                      Financial Institution
+                    </label>
+                    <input
+                      v-model.trim="t.financialInstitution"
+                      type="text"
+                      class="mt-2 h-11 w-full rounded-xl border px-4 text-sm font-semibold outline-none transition
+                             focus:ring-2 focus:ring-neutral-900/10"
+                      :class="fieldClass(errors[idx] && errors[idx].financialInstitution)"
+                      placeholder="Financial Institution Name"
+                      autocomplete="financial-institution"
+                    />
+                    <p v-if="errors[idx] && errors[idx].financialInstitution" class="mt-2 text-xs font-semibold text-red-600">
+                      {{ errors[idx].financialInstitution }}
+                    </p>
+                  </div>
+
+                  <div class="col-span-12 sm:col-span-6">
+                    <label class="block text-xs font-black uppercase tracking-[0.12em] text-neutral-600">
+                      Position
+                    </label>
+                    <input
+                      v-model.trim="t.position"
+                      type="text"
+                      class="mt-2 h-11 w-full rounded-xl border px-4 text-sm font-semibold outline-none transition
+                             focus:ring-2 focus:ring-neutral-900/10"
+                      :class="fieldClass(errors[idx] && errors[idx].position)"
+                      placeholder="Account Manager"
+                      autocomplete="position"
+                    />
+                    <p v-if="errors[idx] && errors[idx].position" class="mt-2 text-xs font-semibold text-red-600">
+                      {{ errors[idx].position }}
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -460,7 +496,7 @@ useSeoMeta({
  * - CF7_FILE_FIELD: a CF7 file field name (must exist) that accepts pdf
  *
  * CF7 endpoint:
- *   POST {base}/wp-json/contact-form-7/v1/contact-forms/{id}/feedback
+ *   position {base}/wp-json/contact-form-7/v1/contact-forms/{id}/feedback
  */
 import { jsPDF } from 'jspdf'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
@@ -486,7 +522,7 @@ const panelRef = ref(null)
 const panelMinHeight = ref('')
 
 // Tickets (start with 1)
-const tickets = ref([{ fullName: '', phone: '', email: '' }])
+const tickets = ref([{ fullName: '', phone: '', email: '', financialInstitution: '', position: '' }])
 const errors = ref([{}])
 
 function openModal() {
@@ -515,7 +551,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 // Add/Remove (max 3)
 function addTicket() {
   if (tickets.value.length >= 3) return
-  tickets.value.push({ fullName: '', phone: '', email: '' })
+  tickets.value.push({ fullName: '', phone: '', email: '', financialInstitution: '', position: '' })
   errors.value.push({})
 }
 
@@ -561,6 +597,14 @@ function validateAll() {
       nextErrors[i].email = 'Please enter a valid email address.'
       ok = false
     }
+    if (!t.financialInstitution || t.financialInstitution.trim().length < 2) {
+      nextErrors[i].financialInstitution = 'Financial Institution is required.'
+      ok = false
+    }
+    if (!t.position || t.position.trim().length < 2) {
+      nextErrors[i].position = 'Position is required.'
+      ok = false
+    }
   })
 
   errors.value = nextErrors
@@ -574,12 +618,16 @@ function buildTicketsSummary() {
       const n = String(t.fullName || '').trim()
       const p = String(t.phone || '').trim()
       const e = String(t.email || '').trim()
+      const f = String(t.financialInstitution || '').trim()
+      const po = String(t.position || '').trim()
 
       return [
         `===== Ticket ${idx + 1} =====`,
         `Full Name: ${n}`,
         `Phone: ${p}`,
         `Email: ${e}`,
+        `Financial Institution: ${f}`,
+        `Position: ${po}`,
         ``,
       ].join('\n')
     })
@@ -621,8 +669,8 @@ function generateTicketsPdfBlob() {
 
   // Ticket cards layout
   let y = 150
-  const cardGap = 14
-  const cardH = 140
+  const cardGap = 16
+  const cardH = 190
 
   tickets.value.forEach((t, idx) => {
     // New page if needed
@@ -644,25 +692,39 @@ function generateTicketsPdfBlob() {
     doc.setFontSize(10)
     doc.text(`TICKET ${idx + 1}`, margin + 28, y + 31)
 
-    // Ticket info
+    // Name
     doc.setTextColor(15, 15, 15)
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
     doc.text(String(t.fullName || '').trim() || '—', margin + 16, y + 64)
 
+    // Details
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(11)
     doc.setTextColor(60, 60, 60)
+
     doc.text(`Phone: ${String(t.phone || '').trim() || '—'}`, margin + 16, y + 88)
-    doc.text(`Email: ${String(t.email || '').trim() || '—'}`, margin + 16, y + 108)
+    doc.text(`Email: ${String(t.email || '').trim() || '—'}`, margin + 16, y + 104)
+    doc.text(`Financial Institution: ${String(t.financialInstitution || '').trim() || '—'}`, margin + 16, y + 120)
+    doc.text(`Position: ${String(t.position || '').trim() || '—'}`, margin + 16, y + 136)
 
-    // Footer line
+    // Footer divider
     doc.setDrawColor(235, 235, 235)
-    doc.line(margin + 16, y + 120, W - margin - 16, y + 120)
+    doc.line(
+      margin + 16,
+      y + cardH - 36,
+      W - margin - 16,
+      y + cardH - 36
+    )
 
+    // Footer text
     doc.setFontSize(10)
     doc.setTextColor(90, 90, 90)
-    doc.text('Please bring this ticket (digital or printed) to the venue.', margin + 16, y + 136)
+    doc.text(
+      'Please bring this ticket (digital or printed) to the venue.',
+      margin + 16,
+      y + cardH - 18
+    )
 
     y += cardH + cardGap
   })
@@ -720,7 +782,7 @@ async function submitReservation() {
     const attendeeEmails = tickets.value.map(t => String(t.email || '').trim()).join(', ')
     fd.append('attendee_emails', attendeeEmails)
     const url = `${CF7_BASE_URL}/wp-json/contact-form-7/v1/contact-forms/${CF7_FORM_ID}/feedback`
-    const res = await fetch(url, { method: 'POST', body: fd })
+    const res = await fetch(url, { method: 'post', body: fd })
 
     const data = await res.json().catch(() => ({}))
 
@@ -756,7 +818,7 @@ async function submitReservation() {
     }, 480)
 
     // Reset fields (optional)
-    tickets.value = [{ fullName: '', phone: '', email: '' }]
+    tickets.value = [{ fullName: '', phone: '', email: '', financialInstitution: '', position: '' }]
     errors.value = [{}]
 
     // Close after a short moment (optional), or keep open
