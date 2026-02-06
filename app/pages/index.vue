@@ -135,7 +135,7 @@
           <!-- Pixel hero (RIGHT on desktop, STACKED on mobile) -->
           <div class="col-span-1 md:col-span-4 md:row-span-3 border-b border-neutral-300 px-0 py-0 min-h-[400px]">
             <div class="w-full relative h-full">
-                <img src="/mmnc-bg-2.webp" class="w-full h-full object-cover absolute top-0 left-0"/>
+                <img src="/monty-club-2.webp" class="w-full h-full object-cover absolute top-0 left-0"/>
             </div>
           </div>
 
@@ -446,7 +446,7 @@ useSeoMeta({
   ogTitle: 'MyMonty Networking Circle',
   description: 'We are delighted to invite you to an exclusive evening of connection with the MyMonty Team. This invitation is only for the financial sector and is targeting C-level. It’s a casual gathering—just socializing and connection. If we missed any C-level , feel free to invite them or let us know so we can invite them directly. The event is next Thursday, June 12th, from 5 PM till 8 PM, held at the Monty Club. If you need any information, please contact Myrna Beaini at +961 71 778774 or myrna.beaini@montyholding.com',
   ogDescription: 'We are delighted to invite you to an exclusive evening of connection with the MyMonty Team. This invitation is only for the financial sector and is targeting C-level. It’s a casual gathering—just socializing and connection. If we missed any C-level , feel free to invite them or let us know so we can invite them directly. The event is next Thursday, June 12th, from 5 PM till 8 PM, held at the Monty Club. If you need any information, please contact Myrna Beaini at +961 71 778774 or myrna.beaini@montyholding.com',
-  ogImage: 'https://mmnc.mymonty.com.lb/monty-club.webp',
+  ogImage: 'https://mmnc.mymonty.com.lb/monty-club-preview.webp',
   twitterCard: 'summary_large_image',
 })
 /**
