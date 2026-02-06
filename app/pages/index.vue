@@ -217,7 +217,7 @@
           </div>
 
           <!-- Body -->
-          <form class="px-6 py-6 overflow-y-auto" style="max-height: calc(92dvh - 84px);" @submit.prevent="submitReservation">
+          <form v-if="!submitSuccess" class="px-6 py-6 overflow-y-auto modal-body" @submit.prevent="submitReservation">
             <div class="grid gap-5">
               <!-- Add/Remove controls -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -349,23 +349,44 @@
               <p v-if="submitError" class="text-sm font-semibold text-red-600">
                 {{ submitError }}
               </p>
-              <p v-if="submitSuccess" class="text-sm font-semibold text-emerald-600">
-                Reservation submitted successfully ✅
-              </p>
-
-              <div v-if="submitSuccess" class="mt-2 flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        @click="closeModal"
-                        class="h-11 rounded-xl bg-neutral-950 px-5 text-sm font-semibold text-white
-                            hover:brightness-110 active:brightness-95"
-                    >
-                        Close
-                    </button>
-              </div>
-                
             </div>
           </form>
+          <div v-else class="px-6 py-10">
+            <div class="mx-auto max-w-xl text-center">
+              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff4a17]/10 text-[#ff4a17]">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+
+              <h3 class="mt-5 text-2xl font-black tracking-tight text-neutral-950">
+                Reservation Confirmed
+              </h3>
+              <p class="mt-2 text-sm text-neutral-600">
+                Your tickets are ready. You can download the PDF below.
+              </p>
+
+              <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  type="button"
+                  @click="downloadTicketsPdf"
+                  class="h-12 w-full sm:w-auto rounded-xl bg-[#ff4a17] px-6 text-white text-sm font-semibold shadow-sm
+                        hover:brightness-95 active:brightness-90"
+                >
+                  Download Tickets PDF
+                </button>
+
+                <button
+                  type="button"
+                  @click="closeModal"
+                  class="h-12 w-full sm:w-auto rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-900
+                        hover:bg-neutral-50"
+                >
+                  Close
+                </button>
+              </div>
+          </div>
+        </div>
         </div>
       </div>
     </Teleport>
