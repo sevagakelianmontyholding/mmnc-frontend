@@ -194,7 +194,7 @@
         <!-- Panel -->
         <div
           ref="panelRef"
-          class="relative w-full md:max-w-3xl overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
+          class="relative w-[min(92vw,48rem)] overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
                 flex flex-col max-h-[92dvh] sm:max-h-[88vh] modal-panel"
           :class="flipPhase !== 'idle' ? 'is-flipping' : ''"
           :style="panelMinHeight ? { minHeight: panelMinHeight } : null"
