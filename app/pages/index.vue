@@ -364,39 +364,75 @@
             </div>
           </form>
           <div v-show="view === 'success'" class="px-6 py-10 overflow-y-auto modal-body">
-              <div class="mx-auto max-w-xl text-center">
-                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff4a17]/10 text-[#ff4a17]">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </div>
+            <div class="mx-auto max-w-xl text-center">
+              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff4a17]/10 text-[#ff4a17]">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
 
-                <h3 class="mt-5 text-2xl font-black tracking-tight text-neutral-950">Reservation Confirmed</h3>
-                <p class="mt-2 text-sm text-neutral-600">
-                  Your tickets are ready. You can download the PDF below.
+              <h3 class="mt-5 text-2xl font-black tracking-tight text-neutral-950">
+                Registration Confirmed ✅
+              </h3>
+
+              <p class="mt-3 text-sm leading-6 text-neutral-700">
+                We look forward to welcoming you for an exclusive evening with the
+                <span class="font-semibold text-neutral-950">MyMonty Networking Circle</span>.
+              </p>
+
+              <p class="mt-4 text-sm leading-6 text-neutral-700">
+                Your ticket is now ready and can be downloaded in PDF format below.
+              </p>
+
+              <div class="mt-5 rounded-2xl border border-neutral-200 bg-neutral-50 p-5 text-left">
+                <p class="text-xs font-black uppercase tracking-[0.14em] text-neutral-500">
+                  Need help?
                 </p>
 
-                <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <button
-                    type="button"
-                    @click="downloadTicketsPdf"
-                    class="h-12 w-full sm:w-auto rounded-xl bg-[#ff4a17] px-6 text-white text-sm font-semibold shadow-sm
-                          hover:brightness-95 active:brightness-90"
-                  >
-                    Download Tickets PDF
-                  </button>
+                <p class="mt-2 text-sm leading-6 text-neutral-700">
+                  Should you have any questions or require further assistance, please feel free to contact
+                  <span class="font-semibold text-neutral-950">Lina Osman</span> at
+                  <a href="tel:+96171958090" class="font-semibold text-[#ff4a17] underline underline-offset-4 hover:brightness-95">
+                    +961 71 958090
+                  </a>
+                  for local calls or at
+                 <a
+                  href="https://wa.me/447771242999"
+                  target="_blank"
+                  rel="noopener"
+                  class="font-semibold text-[#ff4a17] underline underline-offset-4 hover:brightness-95"
+                >
+                  +44 7771242999
+                </a>
+                   for WhatsApp calls and messages.
+                </p>
+              </div>
 
-                  <button
-                    type="button"
-                    @click="closeModal"
-                    class="h-12 w-full sm:w-auto rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-900
-                          hover:bg-neutral-50"
-                  >
-                    Close
-                  </button>
-                </div>
+              <p class="mt-5 text-sm font-semibold text-neutral-800">
+                We look forward to hosting you.
+              </p>
+
+              <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <button
+                  type="button"
+                  @click="downloadTicketsPdf"
+                  class="h-12 w-full sm:w-auto rounded-xl bg-[#ff4a17] px-6 text-white text-sm font-semibold shadow-sm
+                        hover:brightness-95 active:brightness-90"
+                >
+                  Download Tickets PDF
+                </button>
+
+                <button
+                  type="button"
+                  @click="closeModal"
+                  class="h-12 w-full sm:w-auto rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-900
+                        hover:bg-neutral-50"
+                >
+                  Close
+                </button>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </Teleport>
