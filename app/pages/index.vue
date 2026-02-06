@@ -20,7 +20,7 @@
               
               <h1 class="leading-[0.92] tracking-tight text-neutral-950">
                 <div class="mb-2 inline-flex items-center rounded-full border border-neutral-300 px-3 py-1 text-[11px] font-semibold tracking-wide">
-                  <span class="mr-2 inline-block h-2 w-2 rounded-full bg-[#ff4a17]" />
+                  <span class="pulse-dot mr-2 inline-block h-2 w-2 rounded-full bg-[#ff4a17]" />
                   EVENT DETAILS
                 </div>
                 <span class="block text-4xl sm:text-6xl md:text-7xl font-black">MYMONTY</span>
@@ -88,7 +88,7 @@
               
               <h1 class="leading-[0.92] tracking-tight text-neutral-950">
                 <div class="mb-2 inline-flex items-center rounded-full border border-neutral-300 px-3 py-1 text-[11px] font-semibold tracking-wide">
-                  <span class="mr-2 inline-block h-2 w-2 rounded-full bg-[#ff4a17]" />
+                  <span class="pulse-dot mr-2 inline-block h-2 w-2 rounded-full bg-[#ff4a17]" />
                   EVENT DETAILS
                 </div>
                 <span class="block text-5xl sm:text-6xl md:text-7xl font-black">MYMONTY</span>
@@ -107,22 +107,26 @@
           </div>
 
           <!-- Mid strip (left) -->
-          <div class="col-span-1 md:col-span-6 border-b border-neutral-300 md:border-r border-neutral-300 px-6 py-6">
+          <div class="col-span-1 md:col-span-6 border-b border-neutral-300 md:border-r px-6 py-6">
             <p class="text-neutral-800 text-sm">
               The MyMonty Networking Circle is specifically designed for the financial sector in Lebanon. It’s a time to communicate and explore how ideas, relationships, and partnership can grow. Through carefully curated discussions and relaxed networking moments, C-level executives will explore ideas, share experiences, and build relationships that extend beyond the evening. Seats are limited for this gathering, so secure your place today!
             </p>
           </div>
 
-          <div class="col-span-1 md:flex md:flex-col md:justify-center md:col-span-2 border-b border-neutral-300 md:border-r border-neutral-300 px-6 py-6">
+          <div class="col-span-1 md:flex lg:flex-col md:justify-center md:col-span-2 border-b md:border-r border-neutral-300 max-xl:px-3 xl:px-6 py-6">
             <div class="flex items-center justify-between gap-4">
               <a class="flex items-center gap-1" href="https://shorturl.at/Kx0iq" target="_blank">
-                <span class="inline-flex items-center justify-center">
+                <span class="inline-flex items-center justify-center -mt-px">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M12 22s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11Z" fill="#ff4a17" />
                     <circle cx="12" cy="11" r="2.2" fill="white" />
                   </svg>
                 </span>
-                <p class="text-sm font-black uppercase tracking-tight text-neutral-950">MONTY CLUB</p>
+                <div class="flex items-center gap-2">
+                  <p class="text-sm font-black uppercase tracking-tight text-neutral-950 whitespace-nowrap underline underline-offset-3">MONTY CLUB</p>
+                  <span class="text-xl font-black -mt-1">→</span>
+                </div>
+                
                 
               </a>
             </div>
@@ -159,7 +163,7 @@
                     <div>Parking available</div>
                     <div>on level -1</div>
                   </div>
-                  <span class="text-xl font-black">→</span>
+                  
                 </div>
               </div>
             </div>
@@ -189,10 +193,13 @@
 
         <!-- Panel -->
         <div
-            class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
-                    flex flex-col max-h-[92dvh] sm:max-h-[88vh]"
-            role="dialog"
-            aria-modal="true"
+          ref="panelRef"
+          class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
+                flex flex-col max-h-[92dvh] sm:max-h-[88vh] modal-panel"
+          :class="flipPhase !== 'idle' ? 'is-flipping' : ''"
+          :style="panelMinHeight ? { minHeight: panelMinHeight } : null"
+          role="dialog"
+          aria-modal="true"
         >
           <!-- Header -->
           <div class="flex items-start justify-between gap-4 border-b border-neutral-200 px-6 py-5">
@@ -217,7 +224,12 @@
           </div>
 
           <!-- Body -->
-          <form v-if="!submitSuccess" class="px-6 py-6 overflow-y-auto modal-body" @submit.prevent="submitReservation">
+          <form
+            v-show="view === 'form'"
+            class="px-6 py-6 overflow-y-auto modal-body"
+            @submit.prevent="submitReservation"
+          >
+            
             <div class="grid gap-5">
               <!-- Add/Remove controls -->
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -351,42 +363,40 @@
               </p>
             </div>
           </form>
-          <div v-else class="px-6 py-10">
-            <div class="mx-auto max-w-xl text-center">
-              <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff4a17]/10 text-[#ff4a17]">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
+          <div v-show="view === 'success'" class="px-6 py-10 overflow-y-auto modal-body">
+              <div class="mx-auto max-w-xl text-center">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff4a17]/10 text-[#ff4a17]">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+
+                <h3 class="mt-5 text-2xl font-black tracking-tight text-neutral-950">Reservation Confirmed</h3>
+                <p class="mt-2 text-sm text-neutral-600">
+                  Your tickets are ready. You can download the PDF below.
+                </p>
+
+                <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    type="button"
+                    @click="downloadTicketsPdf"
+                    class="h-12 w-full sm:w-auto rounded-xl bg-[#ff4a17] px-6 text-white text-sm font-semibold shadow-sm
+                          hover:brightness-95 active:brightness-90"
+                  >
+                    Download Tickets PDF
+                  </button>
+
+                  <button
+                    type="button"
+                    @click="closeModal"
+                    class="h-12 w-full sm:w-auto rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-900
+                          hover:bg-neutral-50"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
-
-              <h3 class="mt-5 text-2xl font-black tracking-tight text-neutral-950">
-                Reservation Confirmed
-              </h3>
-              <p class="mt-2 text-sm text-neutral-600">
-                Your tickets are ready. You can download the PDF below.
-              </p>
-
-              <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  type="button"
-                  @click="downloadTicketsPdf"
-                  class="h-12 w-full sm:w-auto rounded-xl bg-[#ff4a17] px-6 text-white text-sm font-semibold shadow-sm
-                        hover:brightness-95 active:brightness-90"
-                >
-                  Download Tickets PDF
-                </button>
-
-                <button
-                  type="button"
-                  @click="closeModal"
-                  class="h-12 w-full sm:w-auto rounded-xl border border-neutral-200 bg-white px-6 text-sm font-semibold text-neutral-900
-                        hover:bg-neutral-50"
-                >
-                  Close
-                </button>
-              </div>
-          </div>
-        </div>
+            </div>
         </div>
       </div>
     </Teleport>
@@ -432,15 +442,25 @@ const submitError = ref('')
 const submitSuccess = ref(false)
 const pdfBlobForDownload = ref(null)
 const pdfFileNameForDownload = ref('')
+const view = ref('form')        // 'form' | 'success'
+const isFlipping = ref(false)   // triggers animation
+
+const flipPhase = ref('idle')          // 'idle' | 'out' | 'in'
+const panelRef = ref(null)
+const panelMinHeight = ref('')
 
 // Tickets (start with 1)
 const tickets = ref([{ fullName: '', phone: '', email: '' }])
 const errors = ref([{}])
 
 function openModal() {
+  view.value = 'form'
+  isFlipping.value = false
   submitError.value = ''
   submitSuccess.value = false
   isOpen.value = true
+  flipPhase.value = 'idle'
+  panelMinHeight.value = ''
 }
 
 function closeModal() {
@@ -680,6 +700,25 @@ async function submitReservation() {
 
     submitSuccess.value = true
 
+    isFlipping.value = true
+
+    // Freeze height to avoid layout jump during animation
+    panelMinHeight.value = panelRef.value ? `${panelRef.value.offsetHeight}px` : ''
+
+    flipPhase.value = 'out'
+
+    // Swap content exactly at mid-flip (when panel is edge-on)
+    setTimeout(() => {
+      view.value = 'success'
+      flipPhase.value = 'in'
+    }, 240) // half of animation duration
+
+    // End flip + unfreeze height
+    setTimeout(() => {
+      flipPhase.value = 'idle'
+      panelMinHeight.value = ''
+    }, 480)
+
     // Reset fields (optional)
     tickets.value = [{ fullName: '', phone: '', email: '' }]
     errors.value = [{}]
@@ -748,5 +787,44 @@ async function submitReservation() {
 
 .pulse-button {
   animation: softPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 74, 23, 0.7);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 74, 23, 0);
+    transform: scale(1.15);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 74, 23, 0);
+    transform: scale(1);
+  }
+}
+
+.pulse-dot {
+  animation: dotPulse 1.8s ease-in-out infinite;
+}
+.modal-panel{
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.is-flipping{
+  transition: none;
+}
+
+.is-flipping{
+  animation: flipOutInSmooth 480ms cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes flipOutInSmooth {
+  0%   { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
+  50%  { transform: perspective(1200px) rotateY(90deg); opacity: .25; }
+  50.01% { transform: perspective(1200px) rotateY(-90deg); opacity: .25; }
+  100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
 }
 </style>
