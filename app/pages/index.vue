@@ -187,14 +187,14 @@
 
     <!-- MODAL -->
     <Teleport to="body">
-      <div v-if="isOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+      <div v-if="isOpen" class="fixed inset-0 z-[60] flex items-center justify-center p-4 overflow-hidden">
         <!-- Backdrop (outside click closes) -->
         <div class="absolute inset-0 bg-black/50" @click.self="closeModal"></div>
 
         <!-- Panel -->
         <div
           ref="panelRef"
-          class="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
+          class="relative w-full md:max-w-3xl overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-2xl
                 flex flex-col max-h-[92dvh] sm:max-h-[88vh] modal-panel"
           :class="flipPhase !== 'idle' ? 'is-flipping' : ''"
           :style="panelMinHeight ? { minHeight: panelMinHeight } : null"
@@ -847,20 +847,23 @@ async function submitReservation() {
   transform-style: preserve-3d;
   backface-visibility: hidden;
   will-change: transform, opacity;
+  max-width: 100%;
+  overflow: hidden;
 }
 
+/* Prevent perspective from affecting layout */
 .is-flipping{
-  transition: none;
+  transform-origin: center center;
+}
+
+@keyframes flipOutInSmooth {
+  0%   { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
+  50%  { transform: perspective(1000px) rotateY(88deg); opacity: .25; }
+  50.01% { transform: perspective(1000px) rotateY(-88deg); opacity: .25; }
+  100% { transform: perspective(1000px) rotateY(0deg); opacity: 1; }
 }
 
 .is-flipping{
   animation: flipOutInSmooth 480ms cubic-bezier(.2,.8,.2,1);
-}
-
-@keyframes flipOutInSmooth {
-  0%   { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
-  50%  { transform: perspective(1200px) rotateY(90deg); opacity: .25; }
-  50.01% { transform: perspective(1200px) rotateY(-90deg); opacity: .25; }
-  100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
 }
 </style>
